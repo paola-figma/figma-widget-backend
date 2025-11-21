@@ -1,4 +1,11 @@
-import { google } from "googleapis";
+export default async function handler(req, res) {
+  try {
+    // your code
+    res.status(200).json({ ok: true });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+}
 
 export default function handler(req, res) {
   try {

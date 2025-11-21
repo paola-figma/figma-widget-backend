@@ -2,7 +2,9 @@ import { google } from "googleapis";
 
 export default async function handler(req, res) {
   try {
-    const code = req.query.code;
+    const { code } = req.query;
+
+    if (!code) return res.status(400).json({ error: "Missing ?code=" });
 
     const oauth2Client = new google.auth.OAuth2(
       process.env.GOOGLE_CLIENT_ID,
@@ -13,9 +15,9 @@ export default async function handler(req, res) {
     const { tokens } = await oauth2Client.getToken(code);
 
     res.status(200).json({
-      access_token: tokens.access_token,
+      message: "OAuth successful",
       refresh_token: tokens.refresh_token,
-      note: "Save REFRESH_TOKEN in your Vercel environment variables."
+      access_token: tokens.access_token
     });
   } catch (err) {
     res.status(500).json({ error: err.message });

@@ -1,17 +1,14 @@
-export default async function handler(req, res) {
-  try {
-    // your code
-    res.status(200).json({ ok: true });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
-  }
-}
+import { google } from "googleapis";
 
 export default function handler(req, res) {
   try {
     const clientID = process.env.GOOGLE_CLIENT_ID;
     const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
     const redirectURI = process.env.GOOGLE_REDIRECT_URI;
+
+    if (!clientID || !clientSecret || !redirectURI) {
+      return res.status(500).json({ error: "Missing environment variables." });
+    }
 
     const oauth2Client = new google.auth.OAuth2(
       clientID,
